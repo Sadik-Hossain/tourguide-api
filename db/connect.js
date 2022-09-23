@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
 
-const connect = () => {
-  mongoose
-    .connect(process.env.DB)
-    .then(() => console.log("Database Connected"))
-    .catch((err) => console.log(err));
+const connect = async () => {
+  mongoose.connect(process.env.DB);
+  mongoose.connection
+    .once("open", () => console.log(mongoose.connection.client))
+    .on("error", (error) => {
+      console.log(`your error,${error}`);
+    });
 };
 module.exports = connect;
